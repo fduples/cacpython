@@ -34,34 +34,21 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
     <title>Vista Presentismo</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Incluir el CSS de Bootstrap -->
+   
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
 </head>
 <body class="container mt-5">
     <h1 class="mb-4">Vista Presentismo</h1>
+    <div class="mt-4">
+        <a href="../" class="btn btn-secondary">Volver</a>
+    </div>
     <?php if (isset($error)): ?>
         <div class="alert alert-danger" role="alert">
             Error: <?= htmlspecialchars($error) ?>
         </div>
     <?php else: ?>
-        <h2 class="mt-4">Agrupado por Sección</h2>
-        <?php foreach ($groupedData as $key => $values): ?>
-            <h3><?= htmlspecialchars($values['nombre_seccion']) ?></h3>
-            <p>Jornada: <?= htmlspecialchars($values['jornada']) ?></p>
-            <p>Turno: <?= htmlspecialchars($values['turno']) ?></p>
-            <p>Matriculados: <?= $values['matriculados'] ?></p>
-            <p>Presentes: <?= $values['presente'] ?></p>
-            <p>Ausentes: <?= $values['ausente'] ?></p>
-        <?php endforeach; ?>
-
-        <h2 class="mt-4">Agrupado por Jornada</h2>
-        <?php foreach ($groupByJornada as $jornada => $values): ?>
-            <h3>Jornada: <?= htmlspecialchars($jornada) ?></h3>
-            <p>Matriculados: <?= $values['matriculados'] ?></p>
-            <p>Presentes: <?= $values['presente'] ?></p>
-            <p>Ausentes: <?= $values['ausente'] ?></p>
-        <?php endforeach; ?>
-
+        
         <h2 class="mt-4">Agrupado por Nivel</h2>
         <?php foreach ($groupByNivel as $nivel => $values): ?>
             <h3>Nivel: <?= htmlspecialchars($nivel) ?></h3>
@@ -77,9 +64,25 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
             <p>Presentes: <?= $values['presente'] ?></p>
             <p>Ausentes: <?= $values['ausente'] ?></p>
         <?php endforeach; ?>
+
+        <h2 class="mt-4">Agrupado por Jornada</h2>
+        <?php foreach ($groupByJornada as $jornada => $values): ?>
+            <h3>Jornada: <?= htmlspecialchars($jornada) ?></h3>
+            <p>Matriculados: <?= $values['matriculados'] ?></p>
+            <p>Presentes: <?= $values['presente'] ?></p>
+            <p>Ausentes: <?= $values['ausente'] ?></p>
+        <?php endforeach; ?>
+
+        <h2 class="mt-4">Agrupado por Sección</h2>
+        <?php foreach ($groupedData as $key => $values): ?>
+            <h3><?= htmlspecialchars($values['nombre_seccion']) ?></h3>
+            <p>Jornada: <?= htmlspecialchars($values['jornada']) ?></p>
+            <p>Turno: <?= htmlspecialchars($values['turno']) ?></p>
+            <p>Matriculados: <?= $values['matriculados'] ?></p>
+            <p>Presentes: <?= $values['presente'] ?></p>
+            <p>Ausentes: <?= $values['ausente'] ?></p>
+        <?php endforeach; ?>
+
     <?php endif; ?>
-    <div class="mt-4">
-        <a href="../" class="btn btn-secondary">Volver</a>
-    </div>
 </body>
 </html>

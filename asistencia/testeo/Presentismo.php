@@ -1,5 +1,5 @@
 <?php
-
+require_once 'Presentismo.php';
 class Presentismo {
     private $url;
     private $headers;
@@ -7,13 +7,30 @@ class Presentismo {
     private $fecha;
 
     public function __construct($url, $client_id, $secret, $cueanexo, $fecha) {
-        $this->url = $url . '?cueanexo=' . $cueanexo . '&fecha=' . $fecha;
+        $this->setUrl($url, $cueanexo, $fecha);
         $this->headers = array(
             'client_id: ' . $client_id,
             'secret: ' . $secret
         );
         $this->cueanexo = $cueanexo;
         $this->fecha = $fecha;
+    }
+
+    public function setUrl($baseUrl, $cueanexo, $fecha) {
+        $this->url = $baseUrl . '?cueanexo=' . $cueanexo . '&fecha=' . $fecha;
+    }
+
+    public function getUrl() {
+        return $this->url;
+    }
+
+    public function getFecha() {
+        return $this->fecha;
+    }
+
+    public function setFecha($fecha) {
+        $this->fecha = $fecha;
+        $this->setUrl($this->url, $this->cueanexo, $fecha);
     }
 
     public function fetchData() {
@@ -37,7 +54,7 @@ class Presentismo {
         curl_close($curl);
 
         $data = json_decode($response, true);
-/*
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             return "Error al decodificar JSON: " . json_last_error_msg();
         }
@@ -48,7 +65,7 @@ class Presentismo {
 
         if (!isset($data['rows']) || !is_array($data['rows'])) {
             return "Datos de 'rows' no válidos.";
-        }*/
+        }
 
         return $data['rows'];
     }
