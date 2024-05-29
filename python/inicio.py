@@ -26,3 +26,10 @@ print(pelicula)
 precio = 6000
 cantidad_entradas = int(input("Cuentas entradas va a comprar: "))
 monto_total = print(precio * cantidad_entradas)
+
+cadenas = "Aguante" + str(cantidad_entradas) + " precio" + str(monto_total)
+print(cadenas)
+cadena_facil = f"Aguante {str(cantidad_entradas)} precio {str(monto_total)}"
+print(type(cadena_facil))
+for i in range(20,0,-1):
+    print(i)
