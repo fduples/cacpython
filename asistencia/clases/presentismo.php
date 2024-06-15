@@ -1,10 +1,10 @@
 <?php
 
 class Presentismo {
-    private $url;
-    private $headers;
-    private $cueanexo;
-    private $fecha;
+    protected $url;
+    protected $headers;
+    protected $cueanexo;
+    protected $fecha;
 
     public function __construct($url, $client_id, $secret, $cueanexo, $fecha) {
         $this->url = $url . '?cueanexo=' . $cueanexo . '&fecha=' . $fecha;
@@ -37,7 +37,6 @@ class Presentismo {
         curl_close($curl);
 
         $data = json_decode($response, true);
-/*
         if (json_last_error() !== JSON_ERROR_NONE) {
             return "Error al decodificar JSON: " . json_last_error_msg();
         }
@@ -48,7 +47,7 @@ class Presentismo {
 
         if (!isset($data['rows']) || !is_array($data['rows'])) {
             return "Datos de 'rows' no válidos.";
-        }*/
+        }
 
         return $data['rows'];
     }
@@ -57,7 +56,7 @@ class Presentismo {
         $groupedData = [];
 
         foreach ($data as $record) {
-            if (!isset($record['nombre_seccion'], $record['jornada'], $record['turno'], $record['matriculados'], $record['presente'], $record['ausente'])) {
+            if (!isset($record['nombre_seccion'], $record['jornada'], $record['turno'], $record['matriculados'], $record['presente_ajustado'], $record['ausente_ajustado'], $record['no_corresponde_o_sincarga'])) {
                 return "Datos faltantes o inválidos en la respuesta de la API.";
             }
 
@@ -70,13 +69,15 @@ class Presentismo {
                     'turno' => $record['turno'],
                     'matriculados' => 0,
                     'presente' => 0,
-                    'ausente' => 0
+                    'ausente' => 0,
+                    'sincarga' => 0
                 ];
             }
 
             $groupedData[$key]['matriculados'] += $record['matriculados'];
-            $groupedData[$key]['presente'] += $record['presente'];
-            $groupedData[$key]['ausente'] += $record['ausente'];
+            $groupedData[$key]['presente'] += $record['presente_ajustado'];
+            $groupedData[$key]['ausente'] += $record['ausente_ajustado'];
+            $groupedData[$key]['sincarga'] += $record['no_corresponde_o_sincarga'];
         }
 
         return $groupedData;
@@ -86,7 +87,7 @@ class Presentismo {
         $groupedData = [];
 
         foreach ($data as $record) {
-            if (!isset($record['jornada'], $record['matriculados'], $record['presente'], $record['ausente'])) {
+            if (!isset($record['jornada'], $record['matriculados'], $record['presente_ajustado'], $record['ausente_ajustado'], $record['no_corresponde_o_sincarga'])) {
                 return "Datos faltantes o inválidos en la respuesta de la API.";
             }
 
@@ -96,13 +97,15 @@ class Presentismo {
                 $groupedData[$key] = [
                     'matriculados' => 0,
                     'presente' => 0,
-                    'ausente' => 0
+                    'ausente' => 0,
+                    'sincarga' => 0
                 ];
             }
 
             $groupedData[$key]['matriculados'] += $record['matriculados'];
-            $groupedData[$key]['presente'] += $record['presente'];
-            $groupedData[$key]['ausente'] += $record['ausente'];
+            $groupedData[$key]['presente'] += $record['presente_ajustado'];
+            $groupedData[$key]['ausente'] += $record['ausente_ajustado'];
+            $groupedData[$key]['sincarga'] += $record['no_corresponde_o_sincarga'];
         }
 
         return $groupedData;
@@ -112,7 +115,7 @@ class Presentismo {
         $groupedData = [];
 
         foreach ($data as $record) {
-            if (!isset($record['nivel'], $record['matriculados'], $record['presente'], $record['ausente'])) {
+            if (!isset($record['nivel'], $record['matriculados'], $record['presente_ajustado'], $record['ausente_ajustado'], $record['no_corresponde_o_sincarga'])) {
                 return "Datos faltantes o inválidos en la respuesta de la API.";
             }
 
@@ -122,13 +125,15 @@ class Presentismo {
                 $groupedData[$key] = [
                     'matriculados' => 0,
                     'presente' => 0,
-                    'ausente' => 0
+                    'ausente' => 0,
+                    'sincarga' => 0
                 ];
             }
 
             $groupedData[$key]['matriculados'] += $record['matriculados'];
-            $groupedData[$key]['presente'] += $record['presente'];
-            $groupedData[$key]['ausente'] += $record['ausente'];
+            $groupedData[$key]['presente'] += $record['presente_ajustado'];
+            $groupedData[$key]['ausente'] += $record['ausente_ajustado'];
+            $groupedData[$key]['sincarga'] += $record['no_corresponde_o_sincarga'];
         }
 
         return $groupedData;
@@ -138,7 +143,7 @@ class Presentismo {
         $groupedData = [];
 
         foreach ($data as $record) {
-            if (!isset($record['turno'], $record['matriculados'], $record['presente'], $record['ausente'])) {
+            if (!isset($record['turno'], $record['matriculados'], $record['presente_ajustado'], $record['ausente_ajustado'], $record['no_corresponde_o_sincarga'])) {
                 return "Datos faltantes o inválidos en la respuesta de la API.";
             }
 
@@ -148,13 +153,15 @@ class Presentismo {
                 $groupedData[$key] = [
                     'matriculados' => 0,
                     'presente' => 0,
-                    'ausente' => 0
+                    'ausente' => 0,
+                    'sincarga' => 0
                 ];
             }
 
             $groupedData[$key]['matriculados'] += $record['matriculados'];
-            $groupedData[$key]['presente'] += $record['presente'];
-            $groupedData[$key]['ausente'] += $record['ausente'];
+            $groupedData[$key]['presente'] += $record['presente_ajustado'];
+            $groupedData[$key]['ausente'] += $record['ausente_ajustado'];
+            $groupedData[$key]['sincarga'] += $record['no_corresponde_o_sincarga'];
         }
 
         return $groupedData;

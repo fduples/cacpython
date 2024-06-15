@@ -17,6 +17,10 @@
             <label for="fecha">Fecha (opcional):</label>
             <input type="date" id="fecha" name="fecha" class="form-control">
         </div>
+        <div class="form-group">
+            <label for="mes">Fecha (opcional):</label>
+            <input type="month" id="mes" name="mes" class="form-control">
+        </div>
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
 

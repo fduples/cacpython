@@ -55,6 +55,7 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
             <p>Matriculados: <?= $values['matriculados'] ?></p>
             <p>Presentes: <?= $values['presente'] ?></p>
             <p>Ausentes: <?= $values['ausente'] ?></p>
+            <p>No registrados: <?= $values['sincarga'] ?></p>
         <?php endforeach; ?>
 
         <h2 class="mt-4">Agrupado por Turno</h2>
@@ -63,6 +64,7 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
             <p>Matriculados: <?= $values['matriculados'] ?></p>
             <p>Presentes: <?= $values['presente'] ?></p>
             <p>Ausentes: <?= $values['ausente'] ?></p>
+            <p>No registrados: <?= $values['sincarga'] ?></p>
         <?php endforeach; ?>
 
         <h2 class="mt-4">Agrupado por Jornada</h2>
@@ -71,8 +73,42 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
             <p>Matriculados: <?= $values['matriculados'] ?></p>
             <p>Presentes: <?= $values['presente'] ?></p>
             <p>Ausentes: <?= $values['ausente'] ?></p>
+            <p>No registrados: <?= $values['sincarga'] ?></p>
         <?php endforeach; ?>
-
+        <?php if (isset($error)): ?>
+        <div class="alert alert-danger" role="alert">
+            Error: <?= htmlspecialchars($error) ?>
+        </div>
+    <?php else: ?>
+        <h2 class="mt-4">Agrupado por Sección</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sección</th>
+                    <th>Jornada</th>
+                    <th>Turno</th>
+                    <th>Matriculados</th>
+                    <th>Presentes</th>
+                    <th>Ausentes</th>
+                    <th>No registrados</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($groupedData as $key => $values): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($values['nombre_seccion']) ?></td>
+                        <td><?= htmlspecialchars($values['jornada']) ?></td>
+                        <td><?= htmlspecialchars($values['turno']) ?></td>
+                        <td><?= $values['matriculados'] ?></td>
+                        <td><?= $values['presente'] ?></td>
+                        <td><?= $values['ausente'] ?></td>
+                        <td><?= $values['sincarga'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+    <!--
         <h2 class="mt-4">Agrupado por Sección</h2>
         <?php foreach ($groupedData as $key => $values): ?>
             <h3><?= htmlspecialchars($values['nombre_seccion']) ?></h3>
@@ -81,7 +117,8 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
             <p>Matriculados: <?= $values['matriculados'] ?></p>
             <p>Presentes: <?= $values['presente'] ?></p>
             <p>Ausentes: <?= $values['ausente'] ?></p>
-        <?php endforeach; ?>
+            <p>No registrados: <?= $values['sincarga'] ?></p>
+        <?php endforeach; ?> -->
 
     <?php endif; ?>
 </body>
