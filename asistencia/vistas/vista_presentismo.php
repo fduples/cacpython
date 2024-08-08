@@ -1,14 +1,18 @@
 <?php
 require_once "../clases/Presentismo.php";
+require_once "../clases/matricula.php";
 
 if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
     $cueanexo = $_GET['cueanexo'];
     $fecha = $_GET['fecha'];
     $url = 'http://100.65.8.133:3000/godd/alumno/presentismo_x_cue_x_dia_v2';
+    $url2 = 'http://100.65.8.133:3000/godd/alumno/matricula';
     $client_id = 'godd';
     $secret = '249db411dc038e06a';
     $presentismo = new Presentismo($url, $client_id, $secret, $cueanexo, $fecha);
     $data = $presentismo->fetchData();
+    $matricula = new Matricula($url2, $client_id, $secret, $cueanexo);
+    $rows = $matricula->fetchData();
     
     if (is_array($data)) {
         $groupedData = $presentismo->groupData($data);
@@ -20,6 +24,11 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
         }
     } else {
         $error = $data; // Mensaje de error devuelto por fetchData
+    }
+    if (is_array($rows)) {
+        $escuela = $matricula->getEstablecimiento($rows);
+    } else {
+        $error = $rows; // Mensaje de error
     }
 } else {
     $error = "No se proporcionaron los parámetros necesarios.";
@@ -48,33 +57,52 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
             Error: <?= htmlspecialchars($error) ?>
         </div>
     <?php else: ?>
-        
-        <h2 class="mt-4">Agrupado por Nivel</h2>
-        <?php foreach ($groupByNivel as $nivel => $values): ?>
-            <h3>Nivel: <?= htmlspecialchars($nivel) ?></h3>
-            <p>Matriculados: <?= $values['matriculados'] ?></p>
-            <p>Presentes: <?= $values['presente'] ?></p>
-            <p>Ausentes: <?= $values['ausente'] ?></p>
-            <p>No registrados: <?= $values['sincarga'] ?></p>
-        <?php endforeach; ?>
-
-        <h2 class="mt-4">Agrupado por Turno</h2>
-        <?php foreach ($groupByTurno as $turno => $values): ?>
-            <h3>Turno: <?= htmlspecialchars($turno) ?></h3>
-            <p>Matriculados: <?= $values['matriculados'] ?></p>
-            <p>Presentes: <?= $values['presente'] ?></p>
-            <p>Ausentes: <?= $values['ausente'] ?></p>
-            <p>No registrados: <?= $values['sincarga'] ?></p>
-        <?php endforeach; ?>
-
-        <h2 class="mt-4">Agrupado por Jornada</h2>
-        <?php foreach ($groupByJornada as $jornada => $values): ?>
-            <h3>Jornada: <?= htmlspecialchars($jornada) ?></h3>
-            <p>Matriculados: <?= $values['matriculados'] ?></p>
-            <p>Presentes: <?= $values['presente'] ?></p>
-            <p>Ausentes: <?= $values['ausente'] ?></p>
-            <p>No registrados: <?= $values['sincarga'] ?></p>
-        <?php endforeach; ?>
+        <div class="row g-2">
+        <div class="col-md-6 mb-6">
+            <div class="form-floating">
+                <label for="floatingInputGrid">Escuela</label>
+                <h3><?php echo $escuela['establecimiento']; ?></h3>
+            </div>
+        </div>
+        <div class="col-md-2 mb-6">
+            <div class="form-floating">
+                <label for="floatingSelectGrid">Distrito</label>
+                <h3><?php echo $escuela['de']; ?></h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="mt-4">Agrupado por Nivel</h2>
+            <?php foreach ($groupByNivel as $nivel => $values): ?>
+                <h3>Nivel: <?= htmlspecialchars($nivel) ?></h3>
+                <p>Matriculados: <?= $values['matriculados'] ?></p>
+                <p>Presentes: <?= $values['presente'] ?></p>
+                <p>Ausentes: <?= $values['ausente'] ?></p>
+                <p>No registrados: <?= $values['sincarga'] ?></p>
+            <?php endforeach; ?>
+        </div>
+        <div class="col-md-4">
+            <h2 class="mt-4">Agrupado por Turno</h2>
+            <?php foreach ($groupByTurno as $turno => $values): ?>
+                <h3>Turno: <?= htmlspecialchars($turno) ?></h3>
+                <p>Matriculados: <?= $values['matriculados'] ?></p>
+                <p>Presentes: <?= $values['presente'] ?></p>
+                <p>Ausentes: <?= $values['ausente'] ?></p>
+                <p>No registrados: <?= $values['sincarga'] ?></p>
+            <?php endforeach; ?>
+        </div>
+        <div class="col-md-4">
+            <h2 class="mt-4">Agrupado por Jornada</h2>
+            <?php foreach ($groupByJornada as $jornada => $values): ?>
+                <h3>Jornada: <?= htmlspecialchars($jornada) ?></h3>
+                <p>Matriculados: <?= $values['matriculados'] ?></p>
+                <p>Presentes: <?= $values['presente'] ?></p>
+                <p>Ausentes: <?= $values['ausente'] ?></p>
+                <p>No registrados: <?= $values['sincarga'] ?></p>
+            <?php endforeach; ?>
+        </div>
+    </div>
         <?php if (isset($error)): ?>
         <div class="alert alert-danger" role="alert">
             Error: <?= htmlspecialchars($error) ?>
@@ -121,5 +149,8 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
         <?php endforeach; ?> -->
 
     <?php endif; ?>
+    <div class="mt-4">
+        <a href="../" class="btn btn-secondary">Volver</a>
+    </div>
 </body>
 </html>

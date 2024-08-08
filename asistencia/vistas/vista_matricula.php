@@ -14,12 +14,14 @@ if (isset($_GET['cueanexo'])) {
         $countByLevel = $matricula->countByLevel($rows);
         $countByTurn = $matricula->countByTurn($rows);
         $countByJornada = $matricula->countByJornada($rows);
+        $escuela = $matricula->getEstablecimiento($rows);
     } else {
         $error = $rows; // Mensaje de error
     }
 } else {
     $error = "No se proporcionó el número de CUE Anexo.";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -35,12 +37,26 @@ if (isset($_GET['cueanexo'])) {
 </head>
 <body class="container mt-5">
     <h1 class="mb-4">Vista Matrícula</h1>
+    <div class="row g-2">
+        <div class="col-md-6">
+            <div class="form-floating">
+                <label for="floatingInputGrid">Escuela</label>
+                <h3><?php echo $escuela['establecimiento']; ?></h3>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating">
+                <label for="floatingSelectGrid">Distrito</label>
+                <h3><?php echo $escuela['de']; ?></h3>
+            </div>
+        </div>
+    </div>
     <?php if (isset($error)): ?>
         <div class="alert alert-danger" role="alert">
             Error: <?= htmlspecialchars($error) ?>
         </div>
     <?php else: ?>
-        <p>Total de filas: <?= $totalRows ?></p>
+        <p class="mt-4">Total de filas: <?= $totalRows ?></p>
         <h2 class="mt-4">Cantidad por nivel:</h2>
         <ul class="list-group mb-4">
             <?php foreach ($countByLevel as $nivel => $count): ?>

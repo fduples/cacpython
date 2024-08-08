@@ -1,18 +1,29 @@
 <?php
 require_once "../clases/presentismoMensual.php";
+require_once "../clases/matricula.php";
 
 if (isset($_GET['cueanexo'], $_GET['anio'], $_GET['mes'])) {
     $cueanexo = $_GET['cueanexo'];
     $anio = $_GET['anio'];
     $mes = $_GET['mes'];
     $url = 'http://100.65.8.133:3000/godd/alumno/presentismo_x_cue_x_dia_v2';
+    $url2 = 'http://100.65.8.133:3000/godd/alumno/matricula';
     $client_id = 'godd';
     $secret = '249db411dc038e06a';
     $presentismoMensual = new PresentismoMensual($url, $client_id, $secret, $cueanexo, $anio, $mes);
     $dataMensual = $presentismoMensual->fetchMonthlyData();
+    $matricula = new Matricula($url2, $client_id, $secret, $cueanexo);
+    $rows = $matricula->fetchData();
+    
+    if (is_array($rows)) {
+        $escuela = $matricula->getEstablecimiento($rows);
+    } else {
+        $error = $rows; // Mensaje de error
+    }
 } else {
     $error = "No se proporcionaron los parámetros necesarios.";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +39,22 @@ if (isset($_GET['cueanexo'], $_GET['anio'], $_GET['mes'])) {
 </head>
 <body class="container mt-5">
     <h1 class="mb-4">Vista Presentismo Mensual</h1>
+    <div>
+    <div class="row g-2">
+        <div class="col-md-6">
+            <div class="form-floating">
+                <label for="floatingInputGrid">Escuela</label>
+                <h3><?php echo $escuela['establecimiento']; ?></h3>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-floating">
+                <label for="floatingSelectGrid">Distrito</label>
+                <h3><?php echo $escuela['de']; ?></h3>
+            </div>
+        </div>
+    </div>
+    </div>
     <?php if (isset($error)): ?>
         <div class="alert alert-danger" role="alert">
             Error: <?= htmlspecialchars($error) ?>

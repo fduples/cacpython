@@ -39,25 +39,6 @@ class PresentismoMensual {
 
         return $dataMensual;
     }
-    /*
-    private function agregarDatosDiarios(&$dataMensual, $dataDiaria, $dia) {
-        foreach ($dataDiaria as $registro) {
-            //$nivel = $registro['nivel'];
-            if (!isset($dataMensual[$dia])) {
-                $dataMensual[$dia] = [
-                    'matriculados' => 0,
-                    'presente' => 0,
-                    'ausente' => 0,
-                    'sincarga' => 0,
-                ];
-            }
-
-            $dataMensual[$dia]['matriculados'] = $registro['matriculados'];
-            $dataMensual[$dia]['presente'] = $registro['presente_ajustado'];
-            $dataMensual[$dia]['ausente'] = $registro['ausente_ajustado'];
-            $dataMensual[$dia]['sincarga'] = $registro['no_corresponde_o_sincarga'];
-        }
-    }*/
 
     private function agregarDatosDiarios(&$dataMensual, $dataDiaria, $fecha) {
         foreach ($dataDiaria as $registro) {

@@ -26,7 +26,6 @@ class Matricula {
 
         $response = curl_exec($curl);
         curl_close($curl);
-
         $data = json_decode($response, true);
 
         if ($data !== null && isset($data['rows']) && is_array($data['rows'])) {
@@ -83,6 +82,18 @@ class Matricula {
             }
         }
         return $countByJornada;
+    }
+
+    public function getEstablecimiento($rows) {
+        $escuela = array();
+        foreach ($rows as $row) {
+            if (isset($row['de']) && $row['de'] != 0 && $row['establecimiento'] != "" && isset($row['establecimiento'])) {
+                $escuela['de'] = $row['de'];
+                $escuela['establecimiento'] = $row['establecimiento'];
+                return $escuela;
+            }
+        }
+        return "Error al obtener los datos de la API.";
     }
 }
 
