@@ -36,6 +36,7 @@ if (isset($_GET['cueanexo'])) {
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="container mt-5">
+
     <h1 class="mb-4">Vista Matrícula</h1>
     <div class="row g-2">
         <div class="col-md-6">
@@ -79,5 +80,6 @@ if (isset($_GET['cueanexo'])) {
     <div>
         <a href="../" class="btn btn-secondary">Volver</a>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

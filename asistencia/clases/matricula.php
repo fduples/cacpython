@@ -26,13 +26,24 @@ class Matricula {
 
         $response = curl_exec($curl);
         curl_close($curl);
+
+        //var_dump($response);
+
         $data = json_decode($response, true);
 
+        if ($data === null) {
+            return "Error: no hay respuesta de la API";
+        } elseif ($data['status'] === false || empty($data['rows'])) {
+            return "No hay información para el CUEaxo: " . $this->cueanexo;
+        } else {
+            return $data['rows'];
+        }
+        /*
         if ($data !== null && isset($data['rows']) && is_array($data['rows'])) {
             return $data['rows'];
         } else {
             return "Error al obtener los datos de la API.";
-        }
+        }*/
     }
 
     public function countTotalRows($rows) {
