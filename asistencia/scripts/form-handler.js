@@ -48,12 +48,18 @@ document.getElementById('matriculaForm').addEventListener('submit', function(eve
             form.appendChild(mesInput);
         }
 
+        var codOpInput = document.createElement('input');
+        codOpInput.type = 'hidden';
+        codOpInput.name = 'codOp';
+        codOpInput.value = codigoOp;
+        form.appendChild(codOpInput);
+
         document.body.appendChild(form);
         form.submit();
     }
 
     // Si se proporciona un código OP, buscar el CUE anexo en cues.json
-    if (codigoOp) {
+    /*if (codigoOp) {
         fetch('scripts/cues.json')
             .then(response => response.json())
             .then(data => {
@@ -71,5 +77,44 @@ document.getElementById('matriculaForm').addEventListener('submit', function(eve
     } else if (cueanexo) {
         // Si se proporciona un CUE anexo, realizar la búsqueda directamente
         realizarBusqueda(cueanexo);
+    }*/
+    if (codigoOp) {
+        // Si se proporciona un código OP, buscar el CUE anexo correspondiente
+        fetch('scripts/cues.json')
+            .then(response => response.json())
+            .then(data => {
+                var cueanexo = data[codigoOp];
+                if (cueanexo) {
+                    realizarBusqueda(cueanexo);
+                } else {
+                    alert('No se encontró un CUE anexo para el código OP proporcionado.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar cues.json:', error);
+            });
+    } else if (cueanexo) {
+        // Si se proporciona un CUE anexo, realizar la búsqueda del código OP
+        fetch('scripts/cues.json')
+            .then(response => response.json())
+            .then(data => {
+                // Buscar el código OP correspondiente al CUE anexo
+                var codigoOp = null;
+                for (var key in data) {
+                    if (data[key] === cueanexo) {
+                        codigoOp = key;
+                        break;
+                    }
+                }
+                if (codigoOp) {
+                    realizarBusqueda(cueanexo);
+                } else {
+                    alert('No se encontró un código OP para el CUE anexo proporcionado.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar cues.json:', error);
+            });
     }
+    
 });
