@@ -47,56 +47,63 @@ if (isset($_GET['cueanexo'], $_GET['anio'], $_GET['mes'], $_GET['codOp'])) {
 <body class="container mt-5">
     <h1 class="mb-4">Vista Presentismo Mensual</h1>
     <div>
-    <div class="row g-2">
-        <div class="col-md-6">
-            <div class="form-floating">
-                <label for="floatingInputGrid">Escuela</label>
-                <h3 id="escuela"><?php echo $escuela['establecimiento']; ?></h3>
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger" role="alert">
+                Error: <?= htmlspecialchars($error) ?>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating">
-                <label for="floatingSelectGrid">Distrito</label>
-                <h3 id="distrito"><?php echo $escuela['de']; ?></h3>
+        <?php else: ?>
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <label for="floatingInputGrid">Escuela</label>
+                        <h3 id="escuela"><?php echo $escuela['establecimiento']; ?></h3>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating">
+                        <label for="floatingSelectGrid">Distrito</label>
+                        <h3 id="distrito"><?php echo $escuela['de']; ?></h3>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating">
+                        <label for="floatingSelectGrid">CODIGO OP</label>
+                        <h3 id="codOp"><?php echo $codigo_op; ?></h3>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating">
+                        <!--
+                        <a href="../clases/descarga_pdf.php?cueanexo=<?php echo $cueanexo ?>&anio=<?php echo $anio ?>&mes=<?php echo $mes ?>" class="btn btn-primary">Descargar PDF</a>
+                        -->
+                        <button class="btn btn-primary" onclick="generarPDF()">Descargar PDF</button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating">
-                <label for="floatingSelectGrid">CODIGO OP</label>
-                <h3 id="codOp"><?php echo $codigo_op; ?></h3>
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <label for="floatingInputGrid">Mes</label>
+                        <h3 id="mes"><?php echo $nombreMes; ?></h3>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating">
+                        <label for="floatingSelectGrid">Año</label>
+                        <h3 id="anio"><?php echo $anio; ?></h3>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-floating">
+                        <!--
+                        <a href="../clases/descarga_pdf.php?cueanexo=<?php echo $cueanexo ?>&anio=<?php echo $anio ?>&mes=<?php echo $mes ?>" class="btn btn-primary">Descargar PDF</a>
+                        -->
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating">
-                <!--
-                <a href="../clases/descarga_pdf.php?cueanexo=<?php echo $cueanexo ?>&anio=<?php echo $anio ?>&mes=<?php echo $mes ?>" class="btn btn-primary">Descargar PDF</a>
-                -->
-                <button class="btn btn-primary" onclick="generarPDF()">Descargar PDF</button>
-            </div>
-        </div>
+        <?php endif; ?>
     </div>
-    <div class="row g-2">
-        <div class="col-md-6">
-            <div class="form-floating">
-                <label for="floatingInputGrid">Mes</label>
-                <h3 id="mes"><?php echo $nombreMes; ?></h3>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating">
-                <label for="floatingSelectGrid">Año</label>
-                <h3 id="anio"><?php echo $anio; ?></h3>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-floating">
-                <!--
-                <a href="../clases/descarga_pdf.php?cueanexo=<?php echo $cueanexo ?>&anio=<?php echo $anio ?>&mes=<?php echo $mes ?>" class="btn btn-primary">Descargar PDF</a>
-                -->
-            </div>
-        </div>
-    </div>
-    </div>
+    
     <?php if (isset($error)): ?>
         <div class="alert alert-danger" role="alert">
             Error: <?= htmlspecialchars($error) ?>
