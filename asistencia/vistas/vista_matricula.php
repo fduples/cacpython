@@ -1,12 +1,10 @@
 <?php
-require_once "../clases/matricula.php";
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../clases/matricula.php';
 
 if (isset($_GET['cueanexo'])) {
     $cueanexo = $_GET['cueanexo'];
-    $url = 'http://100.65.8.133:3000/godd/alumno/matricula';
-    $client_id = 'godd';
-    $secret = '249db411dc038e06a';
-    $matricula = new Matricula($url, $client_id, $secret, $cueanexo);
+    $matricula = new Matricula(API_URL_MATRICULA, API_CLIENT_ID, API_SECRET, $cueanexo);
     $rows = $matricula->fetchData();
     
     if (is_array($rows)) {
@@ -15,6 +13,9 @@ if (isset($_GET['cueanexo'])) {
         $countByTurn = $matricula->countByTurn($rows);
         $countByJornada = $matricula->countByJornada($rows);
         $escuela = $matricula->getEstablecimiento($rows);
+        if (!is_array($escuela)) {
+            $error = $escuela;
+        }
     } else {
         $error = $rows; // Mensaje de error
     }
@@ -34,23 +35,19 @@ if (isset($_GET['cueanexo'])) {
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Incluir el CSS de Bootstrap -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body class="container mt-5">
 
     <h1 class="mb-4">Vista Matrícula</h1>
     <div class="row g-2">
         <div class="col-md-6">
-            <div class="form-floating">
-                <label for="floatingInputGrid">Escuela</label>
-                <h3><?php echo $escuela['establecimiento']; ?></h3>
-            </div>
+            <label class="form-label">Escuela</label>
+            <h3><?php echo $escuela['establecimiento']; ?></h3>
         </div>
         <div class="col-md-2">
-            <div class="form-floating">
-                <label for="floatingSelectGrid">Distrito</label>
-                <h3><?php echo $escuela['de']; ?></h3>
-            </div>
+            <label class="form-label">Distrito</label>
+            <h3><?php echo $escuela['de']; ?></h3>
         </div>
     </div>
     <?php if (isset($error)): ?>

@@ -10,7 +10,7 @@ class CodController {
     }
 
     public function handleRequest() {
-        $action = $_POST['action'];
+        $action = $_POST['action'] ?? null;
         $key = $_POST['key'] ?? null;
         $value = $_POST['value'] ?? null;
 

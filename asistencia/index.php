@@ -10,6 +10,7 @@
 <body class="container">
     <div class="m-6 p-3">
         <a type="button" href="vistas/cod_cues.php" class=" btn btn-warning">Administrar Códigos OP y CUES</a>
+        <a type="button" href="vistas/vista_exportar_matricula.php" class="btn btn-success">Exportar Matrícula (CSV)</a>
     </div>
     <h1 class="mt-5">Matrícula y Asistencias MiEscuelaAPP</h1>
     <form id="matriculaForm" class="mt-3">
@@ -35,7 +36,7 @@
             <input type="date" id="fecha" name="fecha" class="form-control">
         </div>
         <div class="form-group mb-3">
-            <label for="mes">Fecha (opcional):</label>
+            <label for="mes">Mes (opcional):</label>
             <input type="month" id="mes" name="mes" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Buscar</button>

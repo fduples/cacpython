@@ -1,7 +1,11 @@
 <?php
 
 class CodModel {
-    private $dataFile = '../scripts/cues.json';
+    private $dataFile;
+
+    public function __construct() {
+        $this->dataFile = __DIR__ . '/../scripts/cues.json';
+    }
 
     public function getAll() {
         $data = file_get_contents($this->dataFile);

@@ -1,23 +1,23 @@
 <?php
-require_once "presentismoMensual.php";
-require_once "matricula.php";
-require('fpdf.php'); // Asegúrate de que el camino es correcto
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/presentismoMensual.php';
+require_once __DIR__ . '/matricula.php';
+require_once __DIR__ . '/fpdf.php';
 
 if (isset($_GET['cueanexo'], $_GET['anio'], $_GET['mes'])) {
     $cueanexo = $_GET['cueanexo'];
     $anio = $_GET['anio'];
     $mes = $_GET['mes'];
-    $url = 'http://100.65.8.133:3000/godd/alumno/presentismo_x_cue_x_dia_v2';
-    $url2 = 'http://100.65.8.133:3000/godd/alumno/matricula';
-    $client_id = 'godd';
-    $secret = '249db411dc038e06a';
-    $presentismoMensual = new PresentismoMensual($url, $client_id, $secret, $cueanexo, $anio, $mes);
+    $presentismoMensual = new PresentismoMensual(API_URL_PRESENTISMO, API_CLIENT_ID, API_SECRET, $cueanexo, $anio, $mes);
     $dataMensual = $presentismoMensual->fetchMonthlyData();
-    $matricula = new Matricula($url2, $client_id, $secret, $cueanexo);
+    $matricula = new Matricula(API_URL_MATRICULA, API_CLIENT_ID, API_SECRET, $cueanexo);
     $rows = $matricula->fetchData();
     
     if (is_array($rows)) {
         $escuela = $matricula->getEstablecimiento($rows);
+        if (!is_array($escuela)) {
+            die("Error: " . $escuela);
+        }
     } else {
         die("Error: " . $rows); // detengo la ejecución si hay un error
     }

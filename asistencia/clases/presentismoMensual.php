@@ -1,6 +1,6 @@
 <?php
 
-require_once "Presentismo.php"; // Asegúrate de incluir la clase Presentismo o ajusta la ruta según sea necesario
+require_once __DIR__ . '/presentismo.php';
 
 class PresentismoMensual {
     protected $url;

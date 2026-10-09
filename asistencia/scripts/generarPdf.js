@@ -69,7 +69,7 @@ function generarPDF() {
     });
 
     // Generar nombre del archivo
-    const nombreArchivo = `${codigoOp}_MiEscuela_Asistencia_${nombreMes}_${anio}.pdf`;
+    const nombreArchivo = `${codigoOp}_AprendeBA_Asistencia_${nombreMes}_${anio}.pdf`;
 
     // Descargar el PDF
     doc.save(nombreArchivo);

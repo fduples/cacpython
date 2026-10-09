@@ -1,17 +1,14 @@
 <?php
-require_once "../clases/Presentismo.php";
-require_once "../clases/matricula.php";
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../clases/presentismo.php';
+require_once __DIR__ . '/../clases/matricula.php';
 
 if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
     $cueanexo = $_GET['cueanexo'];
     $fecha = $_GET['fecha'];
-    $url = 'http://100.65.8.133:3000/godd/alumno/presentismo_x_cue_x_dia_v2';
-    $url2 = 'http://100.65.8.133:3000/godd/alumno/matricula';
-    $client_id = 'godd';
-    $secret = '249db411dc038e06a';
-    $presentismo = new Presentismo($url, $client_id, $secret, $cueanexo, $fecha);
+    $presentismo = new Presentismo(API_URL_PRESENTISMO, API_CLIENT_ID, API_SECRET, $cueanexo, $fecha);
     $data = $presentismo->fetchData();
-    $matricula = new Matricula($url2, $client_id, $secret, $cueanexo);
+    $matricula = new Matricula(API_URL_MATRICULA, API_CLIENT_ID, API_SECRET, $cueanexo);
     $rows = $matricula->fetchData();
     
     if (is_array($data)) {
@@ -27,6 +24,9 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
     }
     if (is_array($rows)) {
         $escuela = $matricula->getEstablecimiento($rows);
+        if (!is_array($escuela)) {
+            $error = $escuela;
+        }
     } else {
         $error = $rows; // Mensaje de error
     }
@@ -45,7 +45,7 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
    
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     
 </head>
 <body class="container mt-5">
@@ -59,17 +59,13 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
         </div>
     <?php else: ?>
         <div class="row g-2">
-        <div class="col-md-6 mb-6">
-            <div class="form-floating">
-                <label for="floatingInputGrid">Escuela</label>
-                <h3><?php echo $escuela['establecimiento']; ?></h3>
-            </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Escuela</label>
+            <h3><?php echo $escuela['establecimiento']; ?></h3>
         </div>
-        <div class="col-md-2 mb-6">
-            <div class="form-floating">
-                <label for="floatingSelectGrid">Distrito</label>
-                <h3><?php echo $escuela['de']; ?></h3>
-            </div>
+        <div class="col-md-2 mb-3">
+            <label class="form-label">Distrito</label>
+            <h3><?php echo $escuela['de']; ?></h3>
         </div>
     </div>
     <div class="row">
@@ -104,11 +100,6 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
             <?php endforeach; ?>
         </div>
     </div>
-        <?php if (isset($error)): ?>
-        <div class="alert alert-danger" role="alert">
-            Error: <?= htmlspecialchars($error) ?>
-        </div>
-    <?php else: ?>
         <h2 class="mt-4">Agrupado por Sección</h2>
         <table class="table table-bordered">
             <thead>
@@ -137,19 +128,7 @@ if (isset($_GET['cueanexo']) && isset($_GET['fecha'])) {
             </tbody>
         </table>
     <?php endif; ?>
-    <!--
-        <h2 class="mt-4">Agrupado por Sección</h2>
-        <?php foreach ($groupedData as $key => $values): ?>
-            <h3><?= htmlspecialchars($values['nombre_seccion']) ?></h3>
-            <p>Jornada: <?= htmlspecialchars($values['jornada']) ?></p>
-            <p>Turno: <?= htmlspecialchars($values['turno']) ?></p>
-            <p>Matriculados: <?= $values['matriculados'] ?></p>
-            <p>Presentes: <?= $values['presente'] ?></p>
-            <p>Ausentes: <?= $values['ausente'] ?></p>
-            <p>No registrados: <?= $values['sincarga'] ?></p>
-        <?php endforeach; ?> -->
 
-    <?php endif; ?>
     <div class="mt-4">
         <a href="../" class="btn btn-secondary">Volver</a>
     </div>

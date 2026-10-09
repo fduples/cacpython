@@ -1,6 +1,7 @@
 <?php
-require_once "../clases/presentismoMensual.php";
-require_once "../clases/matricula.php";
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../clases/presentismoMensual.php';
+require_once __DIR__ . '/../clases/matricula.php';
 
 if (isset($_GET['cueanexo'], $_GET['anio'], $_GET['mes'], $_GET['codOp'])) {
     $cueanexo = $_GET['cueanexo'];
@@ -13,17 +14,16 @@ if (isset($_GET['cueanexo'], $_GET['anio'], $_GET['mes'], $_GET['codOp'])) {
         '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre'
     ];
     $nombreMes = $meses[$mes];
-    $url = 'http://100.65.8.133:3000/godd/alumno/presentismo_x_cue_x_dia_v2';
-    $url2 = 'http://100.65.8.133:3000/godd/alumno/matricula';
-    $client_id = 'godd';
-    $secret = '249db411dc038e06a';
-    $presentismoMensual = new PresentismoMensual($url, $client_id, $secret, $cueanexo, $anio, $mes);
+    $presentismoMensual = new PresentismoMensual(API_URL_PRESENTISMO, API_CLIENT_ID, API_SECRET, $cueanexo, $anio, $mes);
     $dataMensual = $presentismoMensual->fetchMonthlyData();
-    $matricula = new Matricula($url2, $client_id, $secret, $cueanexo);
+    $matricula = new Matricula(API_URL_MATRICULA, API_CLIENT_ID, API_SECRET, $cueanexo);
     $rows = $matricula->fetchData();
     
     if (is_array($rows)) {
         $escuela = $matricula->getEstablecimiento($rows);
+        if (!is_array($escuela)) {
+            $error = $escuela;
+        }
     } else {
         $error = $rows; // Mensaje de error
     }
@@ -43,7 +43,7 @@ if (isset($_GET['cueanexo'], $_GET['anio'], $_GET['mes'], $_GET['codOp'])) {
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Incluir el CSS de Bootstrap -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body class="container mt-5">
     <h1 class="mb-4">Vista Presentismo Mensual</h1>
@@ -55,51 +55,29 @@ if (isset($_GET['cueanexo'], $_GET['anio'], $_GET['mes'], $_GET['codOp'])) {
         <?php else: ?>
             <div class="row g-2">
                 <div class="col-md-6">
-                    <div class="form-floating">
-                        <label for="floatingInputGrid">Escuela</label>
-                        <h3 id="escuela"><?php echo $escuela['establecimiento']; ?></h3>
-                    </div>
+                    <label class="form-label">Escuela</label>
+                    <h3 id="escuela"><?php echo $escuela['establecimiento']; ?></h3>
                 </div>
                 <div class="col-md-2">
-                    <div class="form-floating">
-                        <label for="floatingSelectGrid">Distrito</label>
-                        <h3 id="distrito"><?php echo $escuela['de']; ?></h3>
-                    </div>
+                    <label class="form-label">Distrito</label>
+                    <h3 id="distrito"><?php echo $escuela['de']; ?></h3>
                 </div>
                 <div class="col-md-2">
-                    <div class="form-floating">
-                        <label for="floatingSelectGrid">CODIGO OP</label>
-                        <h3 id="codOp"><?php echo $codigo_op; ?></h3>
-                    </div>
+                    <label class="form-label">CODIGO OP</label>
+                    <h3 id="codOp"><?php echo $codigo_op; ?></h3>
                 </div>
                 <div class="col-md-2">
-                    <div class="form-floating">
-                        <!--
-                        <a href="../clases/descarga_pdf.php?cueanexo=<?php echo $cueanexo ?>&anio=<?php echo $anio ?>&mes=<?php echo $mes ?>" class="btn btn-primary">Descargar PDF</a>
-                        -->
-                        <button class="btn btn-primary" onclick="generarPDF()">Descargar PDF</button>
-                    </div>
+                    <button class="btn btn-primary" onclick="generarPDF()">Descargar PDF</button>
                 </div>
             </div>
             <div class="row g-2">
                 <div class="col-md-6">
-                    <div class="form-floating">
-                        <label for="floatingInputGrid">Mes</label>
-                        <h3 id="mes"><?php echo $nombreMes; ?></h3>
-                    </div>
+                    <label class="form-label">Mes</label>
+                    <h3 id="mes"><?php echo $nombreMes; ?></h3>
                 </div>
                 <div class="col-md-2">
-                    <div class="form-floating">
-                        <label for="floatingSelectGrid">Año</label>
-                        <h3 id="anio"><?php echo $anio; ?></h3>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-floating">
-                        <!--
-                        <a href="../clases/descarga_pdf.php?cueanexo=<?php echo $cueanexo ?>&anio=<?php echo $anio ?>&mes=<?php echo $mes ?>" class="btn btn-primary">Descargar PDF</a>
-                        -->
-                    </div>
+                    <label class="form-label">Año</label>
+                    <h3 id="anio"><?php echo $anio; ?></h3>
                 </div>
             </div>
         <?php endif; ?>
