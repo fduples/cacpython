@@ -30,6 +30,17 @@ if ($codigoOpArchivo === '' && $cueanexo !== '') {
     }
 }
 
+// Salvaguarda: solo se puede consultar si el CUE Anexo es numérico
+if ($error === null && $cueanexo !== '' && !ctype_digit((string) $cueanexo)) {
+    if ($codigoOp !== '') {
+        $error = 'El Código OP "' . htmlspecialchars($codigoOp) . '" no tiene un CUE Anexo asociado válido ("' . htmlspecialchars($cueanexo) . '"). No se puede realizar la consulta.';
+    } elseif ($codigoOpArchivo !== '') {
+        $error = 'El Código OP "' . htmlspecialchars($codigoOpArchivo) . '" no tiene un CUE Anexo asociado válido ("' . htmlspecialchars($cueanexo) . '"). No se puede realizar la consulta.';
+    } else {
+        $error = 'El valor ingresado no es un CUE Anexo válido ("' . htmlspecialchars($cueanexo) . '"). No se puede realizar la consulta.';
+    }
+}
+
 if ($error === null && $cueanexo !== '') {
     $matricula = new Matricula(API_URL_MATRICULA, API_CLIENT_ID, API_SECRET, $cueanexo);
     $data = $matricula->fetchData();

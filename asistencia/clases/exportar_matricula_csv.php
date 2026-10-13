@@ -15,6 +15,10 @@ if ($cueanexo === '') {
     http_response_code(400);
     die('Falta el parámetro "cueanexo".');
 }
+if (!ctype_digit((string) $cueanexo)) {
+    http_response_code(400);
+    die('El CUE Anexo indicado no es válido ("' . $cueanexo . '"). No se puede realizar la consulta.');
+}
 
 $matricula = new Matricula(API_URL_MATRICULA, API_CLIENT_ID, API_SECRET, $cueanexo);
 $rows = $matricula->fetchData();
