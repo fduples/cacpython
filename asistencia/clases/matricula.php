@@ -14,7 +14,7 @@ class Matricula {
         $this->cueanexo = $cueanexo;
     }
 
-    public function fetchData() {
+    public function fetchData($timeout = 120, $connectTimeout = 30) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -22,6 +22,8 @@ class Matricula {
             CURLOPT_HTTPHEADER => $this->headers,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_TIMEOUT => $timeout,
+            CURLOPT_CONNECTTIMEOUT => $connectTimeout,
         ));
 
         $response = curl_exec($curl);
