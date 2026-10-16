@@ -12,6 +12,7 @@
         <a type="button" href="vistas/cod_cues.php" class=" btn btn-warning">Administrar Códigos OP y CUES</a>
         <a type="button" href="vistas/vista_exportar_matricula.php" class="btn btn-success">Exportar Matrícula (CSV)</a>
         <a type="button" href="vistas/vista_exportar_matricula_masiva.php" class="btn btn-success">Exportar Matrícula Masiva (CSV)</a>
+        <a type="button" href="vistas/vista_exportar_matricula_masiva_stream.php" class="btn btn-success">Exportar Matrícula Masiva (Streaming)</a>
     </div>
     <h1 class="mt-5">Matrícula y Asistencias MiEscuelaAPP</h1>
     <form id="matriculaForm" class="mt-3">
